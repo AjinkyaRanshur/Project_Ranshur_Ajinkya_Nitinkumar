@@ -1,19 +1,21 @@
-#interface.py
+# interface.py
+import os
+import torch
+import matplotlib.pyplot as plt
+import torchattacks
+from torch.utils.data import DataLoader
+from tqdm import tqdm  # For progress bars
 
-# --- IMPORTANT: Modify the names on the left (before 'import') ---
-# --- and the names on the right (after 'import' and before 'as') ---
-# --- to match YOUR actual class/function/variable names ---
-
-# Import your Model Class
+# --- Import your Model Class
 from model import VGG16Model as TheModel
 
-# Import your Training Function
+# --- Import your Training Function
 from train import my_descriptively_named_train_function as the_trainer
 
-# Import your Prediction Function
+# --- Import your Prediction Function
 from predict import cryptic_inf_f as the_predictor
 
-# Import your Dataset Class
+# --- Import your Dataset Class
 # Creating a simple wrapper class for the datasets
 class YourCifar100Dataset:
     """Wrapper class for CIFAR100 dataset loaders"""
@@ -21,21 +23,20 @@ class YourCifar100Dataset:
         self.train_loader = train_loader
         self.test_loader = test_loader
 
-# Import your dataloaders
+# --- Import your dataloaders
 from dataset import train_loader, test_loader
 TheDataset = YourCifar100Dataset(train_loader, test_loader)
 
-# Import your DataLoader(s)
+# --- Import your DataLoader(s)
 from dataset import train_loader as the_dataloader
 
-# Import configuration variables
+# --- Import configuration variables
 from config import BATCH_SIZE as the_batch_size
 from config import NUM_EPOCHS as total_epochs
+from config import DEVICE
 
-# --- End of modifications ---
 
-
-# ----- Functions-------------
+# ----- Functions -------------
 
 def ensure_results_dir(path: str = "results") -> str:
     """
@@ -61,23 +62,38 @@ def run_fgsm_attack(model: torch.nn.Module,
 
     # Measure clean accuracy
     correct_clean, total = 0, 0
-    for images, labels in dataloader:
+    print("Evaluating clean accuracy...")
+    clean_pbar = tqdm(dataloader, unit="batch")
+    
+    for images, labels in clean_pbar:
         images, labels = images.to(device), labels.to(device)
         outputs = model(images)
         _, preds = outputs.max(1)
         correct_clean += (preds == labels).sum().item()
         total += labels.size(0)
+        # Update progress bar
+        current_acc = 100 * correct_clean / total
+        clean_pbar.set_postfix({"accuracy": f"{current_acc:.2f}%"})
+        
     acc_clean = correct_clean / total
 
     # Generate FGSM adversarial examples
     attacker = torchattacks.FGSM(model, eps=eps)
     correct_adv = 0
-    for images, labels in dataloader:
+    
+    print(f"Running FGSM attack with eps={eps}...")
+    adv_pbar = tqdm(dataloader, unit="batch")
+    
+    for images, labels in adv_pbar:
         images, labels = images.to(device), labels.to(device)
         adv_images = attacker(images, labels)
         outputs = model(adv_images)
         _, preds = outputs.max(1)
         correct_adv += (preds == labels).sum().item()
+        # Update progress bar
+        current_acc = 100 * correct_adv / total
+        adv_pbar.set_postfix({"accuracy": f"{current_acc:.2f}%"})
+        
     acc_adv = correct_adv / total
 
     # Plot and save
@@ -114,23 +130,38 @@ def run_pgd_attack(model: torch.nn.Module,
 
     # Measure clean accuracy
     correct_clean, total = 0, 0
-    for images, labels in dataloader:
+    print("Evaluating clean accuracy...")
+    clean_pbar = tqdm(dataloader, unit="batch")
+    
+    for images, labels in clean_pbar:
         images, labels = images.to(device), labels.to(device)
         outputs = model(images)
         _, preds = outputs.max(1)
         correct_clean += (preds == labels).sum().item()
         total += labels.size(0)
+        # Update progress bar
+        current_acc = 100 * correct_clean / total
+        clean_pbar.set_postfix({"accuracy": f"{current_acc:.2f}%"})
+        
     acc_clean = correct_clean / total
 
     # Generate PGD adversarial examples
     attacker = torchattacks.PGD(model, eps=eps, alpha=alpha, steps=steps)
     correct_adv = 0
-    for images, labels in dataloader:
+    
+    print(f"Running PGD attack with eps={eps}, alpha={alpha}, steps={steps}...")
+    adv_pbar = tqdm(dataloader, unit="batch")
+    
+    for images, labels in adv_pbar:
         images, labels = images.to(device), labels.to(device)
         adv_images = attacker(images, labels)
         outputs = model(adv_images)
         _, preds = outputs.max(1)
         correct_adv += (preds == labels).sum().item()
+        # Update progress bar
+        current_acc = 100 * correct_adv / total
+        adv_pbar.set_postfix({"accuracy": f"{current_acc:.2f}%"})
+        
     acc_adv = correct_adv / total
 
     # Plot and save
@@ -147,6 +178,51 @@ def run_pgd_attack(model: torch.nn.Module,
 
     return acc_clean, acc_adv
 
+
+def run_adversarial_tests(model_path=None):
+    """Run both FGSM and PGD attacks on the model"""
+    device = torch.device(DEVICE if torch.cuda.is_available() else "cpu")
+    
+    # Load the model
+    model = TheModel().to(device)
+    if model_path:
+        print(f"Loading model from {model_path}...")
+        model.load_state_dict(torch.load(model_path, map_location=device))
+    model.eval()
+    
+    # Test subset for faster evaluation
+    test_subset = []
+    test_count = 0
+    max_test_samples = 100  # Limit number of test samples for speed
+    
+    print("Creating test subset...")
+    for images, labels in tqdm(test_loader, desc="Preparing test subset"):
+        test_subset.append((images, labels))
+        test_count += images.size(0)
+        if test_count >= max_test_samples:
+            break
+    
+    print(f"Using {test_count} samples for adversarial testing")
+    
+    # Create a simple dataloader for the subset
+    class SimpleDataset:
+        def __init__(self, data):
+            self.data = data
+        
+        def __iter__(self):
+            return iter(self.data)
+    
+    test_subset_loader = SimpleDataset(test_subset)
+    
+    # Run attacks
+    print("\nRunning FGSM attack...")
+    run_fgsm_attack(model, test_subset_loader, device)
+    
+    print("\nRunning PGD attack...")
+    run_pgd_attack(model, test_subset_loader, device)
+    
+    print("\nAdversarial testing complete. Check the 'results' directory for plots.")
+
 #-----------------------------
 
 # The grading program will use these standardized names:
@@ -162,9 +238,29 @@ print(f"Epochs: {total_epochs}")
 
 # Run training if this script is executed directly
 if __name__ == "__main__":
-    print("Starting training from interface.py...")
-    try:
-        trained_model = the_trainer()
-        print("Training complete!")
-    except Exception as e:
-        print(f"Error during training: {e}")
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Run training and adversarial testing")
+    parser.add_argument(
+        "--train", 
+        action="store_true",
+        help="Train the model before testing"
+    )
+    parser.add_argument(
+        "--test-adversarial",
+        action="store_true",
+        help="Run adversarial attacks on the model"
+    )
+    args = parser.parse_args()
+    
+    if args.train:
+        print("Starting training from interface.py...")
+        try:
+            trained_model = the_trainer()
+            print("Training complete!")
+        except Exception as e:
+            print(f"Error during training: {e}")
+    
+    if args.test_adversarial:
+        print("Running adversarial tests...")
+        run_adversarial_tests(model_path=config.CHECKPOINT_PATH)

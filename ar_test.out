@@ -1,0 +1,52 @@
+==========================================
+SLURM_CLUSTER_NAME = param-brahma
+SLURM_ARRAY_JOB_ID = 
+SLURM_ARRAY_TASK_ID = 
+SLURM_ARRAY_TASK_COUNT = 
+SLURM_ARRAY_TASK_MAX = 
+SLURM_ARRAY_TASK_MIN = 
+SLURM_JOB_ACCOUNT = leelavati
+SLURM_JOB_ID = 7966688
+SLURM_JOB_NAME = ar_test
+SLURM_JOB_NODELIST = gpu017
+SLURM_JOB_USER = ajinkyar
+SLURM_JOB_UID = 7397
+SLURM_JOB_PARTITION = gpu
+SLURM_TASK_PID = 3558
+SLURM_SUBMIT_DIR = /scratch/ajinkyar/Project_Ranshur_Ajinkya_Nitinkumar
+SLURM_CPUS_ON_NODE = 1
+SLURM_NTASKS = 1
+SLURM_TASK_PID = 3558
+==========================================
+
+     active environment : /home/ajinkyar/miniconda3/envs/autoenc
+    active env location : /home/ajinkyar/miniconda3/envs/autoenc
+            shell level : 2
+       user config file : /home/ajinkyar/.condarc
+ populated config files : 
+          conda version : 4.10.3
+    conda-build version : 3.21.5
+         python version : 3.9.5.final.0
+       virtual packages : __cuda=12.4=0
+                          __linux=3.10.0=0
+                          __glibc=2.17=0
+                          __unix=0=0
+                          __archspec=1=x86_64
+       base environment : /home/apps/iiser/apps_intel_2020/AmberTools20/miniconda  (read only)
+      conda av data dir : /home/apps/iiser/apps_intel_2020/AmberTools20/miniconda/etc/conda
+  conda av metadata url : None
+           channel URLs : https://repo.anaconda.com/pkgs/main/linux-64
+                          https://repo.anaconda.com/pkgs/main/noarch
+                          https://repo.anaconda.com/pkgs/r/linux-64
+                          https://repo.anaconda.com/pkgs/r/noarch
+          package cache : /home/apps/iiser/apps_intel_2020/AmberTools20/miniconda/pkgs
+                          /home/ajinkyar/.conda/pkgs
+       envs directories : /home/ajinkyar/.conda/envs
+                          /home/apps/iiser/apps_intel_2020/AmberTools20/miniconda/envs
+               platform : linux-64
+             user-agent : conda/4.10.3 requests/2.25.1 CPython/3.9.5 Linux/3.10.0-957.el7.x86_64 centos/7.6.1810 glibc/2.17
+                UID:GID : 7397:7398
+             netrc file : None
+           offline mode : False
+
+True

@@ -6,7 +6,7 @@ LEARNING_RATE = 0.001
 # BATCH_SIZE
 BATCH_SIZE = 32
 NUM_EPOCHS = 50
-DEVICE = "cpu"
+DEVICE = "cuda"
 
 # model configuration
 NUM_CLASSES = 100  # CIFAR100 has 100 classes
