@@ -1,162 +1,73 @@
-# train.py
+import os
+import argparse
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from tqdm import tqdm  # Optional: for progress bar
-import matplotlib.pyplot as plt
-import numpy as np
-import os
-import config
-from model import VGG16Model  # Import your model class (use the actual name)
-# Import your dataloaders (use the actual variable names)
-from dataset import train_loader as your_train_loader
-from dataset import test_loader as your_valid_loader
+from torch.utils.data import DataLoader
+from model import MyModel            # Your model definition
+from dataset import YourDataset      # Your dataset class
+from config import Config            # Config file for hyperparameters
 
 
-def my_descriptively_named_train_function():
-    # Create directories for plots and checkpoints
-    os.makedirs('plots', exist_ok=True)
-    os.makedirs(os.path.dirname(config.CHECKPOINT_PATH), exist_ok=True)
+def train_model(checkpoint_path: str = "checkpoint.pth") -> None:
+    """
+    Trains the model from scratch and saves weights to checkpoint_path.
+    """
+    # Load config
+    config = Config()
 
-    print(f"Using device: {config.DEVICE}")
-    device = torch.device(config.DEVICE)
+    # Device setup
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    model = VGG16Model(num_classes=config.NUM_CLASSES).to(device)
-
-    # Loss Function
-    criterion = nn.CrossEntropyLoss()
-
-    # Optimizer
-    optimizer = optim.SGD(
-        model.parameters(),
-        lr=config.LEARNING_RATE,
-        momentum=config.OPTIMIZER_MOMENTUM,
-        weight_decay=config.OPTIMIZER_WEIGHT_DECAY
+    # Prepare dataset and dataloader
+    train_dataset = YourDataset(split="train")
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=config.batch_size,
+        shuffle=True,
+        num_workers=config.num_workers
     )
 
-    # Lists to store metrics for plotting
-    train_losses = []
-    train_accs = []
-    val_losses = []
-    val_accs = []
+    # Initialize model, loss, optimizer
+    model = MyModel().to(device)
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.parameters(), lr=config.learning_rate)
 
-    print("Starting Training...")
-    for epoch in range(config.NUM_EPOCHS):
+    # Training loop
+    for epoch in range(config.num_epochs):
         model.train()
         running_loss = 0.0
-        correct = 0
-        total = 0
-        
-        # Use tqdm for progress bar (optional)
-        train_pbar = tqdm(
-            your_train_loader,
-            desc=f"Epoch {epoch+1}/{config.NUM_EPOCHS} [Train]")
-
-        for inputs, labels in train_pbar:
-            inputs, labels = inputs.to(device), labels.to(device)
+        for images, labels in train_loader:
+            images, labels = images.to(device), labels.to(device)
             optimizer.zero_grad()
-
-            # fwd pass
-            outputs = model(inputs)
+            outputs = model(images)
             loss = criterion(outputs, labels)
-
-            # backward pass
             loss.backward()
             optimizer.step()
+            running_loss += loss.item() * images.size(0)
 
-            running_loss += loss.item() * inputs.size(0)
-            _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
+        epoch_loss = running_loss / len(train_loader.dataset)
+        print(f"Epoch [{epoch+1}/{config.num_epochs}], Loss: {epoch_loss:.4f}")
 
-            train_pbar.set_postfix({'loss': loss.item()})
-
-        # Calculate epoch statistics
-        epoch_loss = running_loss / len(your_train_loader.dataset)
-        epoch_acc = 100.0 * correct / total
-        train_losses.append(epoch_loss)
-        train_accs.append(epoch_acc)
-        
-        print(
-            f"Epoch {epoch+1}/{config.NUM_EPOCHS} - Training Loss: {epoch_loss:.4f}, Training Acc: {epoch_acc:.2f}%")
-
-        # --- Validation Step ---
-        model.eval()  # Set model to evaluation mode
-        val_loss = 0.0
-        correct = 0
-        total = 0
-
-        valid_pbar = tqdm(
-            your_valid_loader,
-            desc=f"Epoch {epoch+1}/{config.NUM_EPOCHS} [Val]")
-        with torch.no_grad():
-            for inputs, labels in valid_pbar:
-                inputs, labels = inputs.to(device), labels.to(device)
-                outputs = model(inputs)
-                loss = criterion(outputs, labels)
-                val_loss += loss.item() * inputs.size(0)
-                _, predicted = torch.max(outputs.data, 1)
-                total += labels.size(0)
-                correct += (predicted == labels).sum().item()
-                valid_pbar.set_postfix({'val_loss': loss.item()})
-
-        epoch_val_loss = val_loss / len(your_valid_loader.dataset)
-        epoch_val_acc = 100 * correct / total
-        val_losses.append(epoch_val_loss)
-        val_accs.append(epoch_val_acc)
-        
-        print(
-            f"Epoch {epoch+1}/{config.NUM_EPOCHS} - Validation Loss: {epoch_val_loss:.4f}, Validation Acc: {epoch_val_acc:.2f}%")
-        
-        # Plot metrics after each epoch
-        plot_metrics(epoch+1, train_losses, val_losses, train_accs, val_accs)
-
-    print("Finished Training")
-
-    # Save the trained model weights
-    torch.save(model.state_dict(), config.CHECKPOINT_PATH)
-    print(f"Model weights saved to {config.CHECKPOINT_PATH}")
-    
-    # Final plot
-    plot_metrics(config.NUM_EPOCHS, train_losses, val_losses, train_accs, val_accs, final=True)
-
-    return model
+    # Save checkpoint
+    torch.save(model.state_dict(), checkpoint_path)
+    print(f"Model trained and saved to {checkpoint_path}")
 
 
-def plot_metrics(epoch, train_losses, val_losses, train_accs, val_accs, final=False):
-    """Plot and save training/validation metrics."""
-    epochs = range(1, epoch + 1)
-    
-    plt.figure(figsize=(12, 5))
-    
-    # Plot losses
-    plt.subplot(1, 2, 1)
-    plt.plot(epochs, train_losses, 'b-', label='Training Loss')
-    plt.plot(epochs, val_losses, 'r-', label='Validation Loss')
-    plt.title('Training and Validation Loss')
-    plt.xlabel('Epochs')
-    plt.ylabel('Loss')
-    plt.legend()
-    plt.grid(True)
-    
-    # Plot accuracies
-    plt.subplot(1, 2, 2)
-    plt.plot(epochs, train_accs, 'b-', label='Training Accuracy')
-    plt.plot(epochs, val_accs, 'r-', label='Validation Accuracy')
-    plt.title('Training and Validation Accuracy')
-    plt.xlabel('Epochs')
-    plt.ylabel('Accuracy (%)')
-    plt.legend()
-    plt.grid(True)
-    
-    plt.tight_layout()
-    
-    filename = 'plots/final_metrics.png' if final else f'plots/metrics_epoch_{epoch}.png'
-    plt.savefig(filename)
-    plt.close()
-    
-    print(f"Metrics plot saved to {filename}")
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Train the model and save a checkpoint.")
+    parser.add_argument(
+        "--force-retrain",
+        action="store_true",
+        help="Retrain even if checkpoint already exists."
+    )
+    args = parser.parse_args()
 
+    checkpoint_path = "checkpoint.pth"
+    # If checkpoint exists and user did not force retrain, skip training
+    if os.path.exists(checkpoint_path) and not args.force_retrain:
+        print(f"Checkpoint '{checkpoint_path}' exists. Skipping training.")
+    else:
+        train_model(checkpoint_path)
+    print("Training step complete. You can now run interface.py for evaluation.")
 
-if __name__ == '__main__':
-    my_descriptively_named_train_function()
