@@ -6,7 +6,7 @@ LEARNING_RATE = 0.001
 # BATCH_SIZE
 BATCH_SIZE = 32
 NUM_EPOCHS = 50
-DEVICE = "cuda"
+DEVICE = "cpu"
 
 # model configuration
 NUM_CLASSES = 100  # CIFAR100 has 100 classes
@@ -18,7 +18,7 @@ RESIZE_WIDTH = 224
 # Normalization parameters for images(commonly used for models pretrained
 # on Imagenet)
 NORM_MEAN = [0.485, 0.456, 406]
-NORM_STD = []
+NORM_STD = [0.229, 0.224, 0.225]
 DATA_DIR = './data'
 SHUFFLE_DATA = True
 VALID_SIZE = 0.1  # Example use 10% of training data for validation

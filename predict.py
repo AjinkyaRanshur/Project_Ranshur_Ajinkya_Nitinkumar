@@ -5,22 +5,24 @@ import config
 from model import VGG16Model  # Import your model class name
 from dataset import data_transforms  # Import transforms used during training
 
-# Load the trained model
-device = torch.device(config.DEVICE)
-model = VGG16Model(num_classes=config.NUM_CLASSES).to(device)
-# Load weights saved during training
-model.load_state_dict(torch.load(config.CHECKPOINT_PATH, map_location=device))
-model.eval()  # Set model to evaluation mode
-
 # Define the prediction function
-# Rename this function as needed, e.g., my_inference_function
-
-
-def cryptic_inf_f(image_path):
+def cryptic_inf_f(image_path, model_path=config.CHECKPOINT_PATH):
     """
     Takes a path to an image, preprocesses it, and returns the predicted class index.
-    Adjust input/output based on specific assignment requirements (e.g., batch input).
     """
+    device = torch.device(config.DEVICE)
+    
+    # Load the model
+    model = VGG16Model(num_classes=config.NUM_CLASSES).to(device)
+    
+    # Try to load weights if they exist
+    try:
+        model.load_state_dict(torch.load(model_path, map_location=device))
+        model.eval()  # Set model to evaluation mode
+    except FileNotFoundError:
+        print(f"Warning: Model weights not found at {model_path}. Using untrained model.")
+        model.eval()
+    
     try:
         image = Image.open(image_path).convert('RGB')
         # Apply the same transformations as the test set
@@ -41,9 +43,5 @@ def cryptic_inf_f(image_path):
 
 # Example usage (optional)
 if __name__ == '__main__':
-    # You'll need an example image path in your data/ directory or elsewhere
-    # example_image = 'data/example_image.jpg'
-    # prediction = cryptic_inf_f(example_image)
-    # if prediction is not None:
-    #     print(f"Predicted class index for {example_image}: {prediction}")
-    pass  # Add test code if needed
+    # Test code if needed
+    pass

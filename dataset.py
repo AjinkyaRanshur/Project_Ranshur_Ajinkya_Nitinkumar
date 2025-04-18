@@ -47,7 +47,7 @@ train_loader = DataLoader(
     num_workers=2
 )
 
-test_loader = Dataloader(
+test_loader = DataLoader(
     test_dataset,
     batch_size=config.BATCH_SIZE,
     shuffle=False,
@@ -57,4 +57,4 @@ test_loader = Dataloader(
 
 # --- Assign loaders to expected names ---
 your_train_loader = train_loader
-your_test_loader = test_loader
+your_valid_loader = test_loader
