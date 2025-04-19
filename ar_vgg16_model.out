@@ -6,22 +6,22 @@ SLURM_ARRAY_TASK_COUNT =
 SLURM_ARRAY_TASK_MAX = 
 SLURM_ARRAY_TASK_MIN = 
 SLURM_JOB_ACCOUNT = leelavati
-SLURM_JOB_ID = 7967539
+SLURM_JOB_ID = 7968425
 SLURM_JOB_NAME = ar_vgg16_model
-SLURM_JOB_NODELIST = gpu024
+SLURM_JOB_NODELIST = gpu007
 SLURM_JOB_USER = ajinkyar
 SLURM_JOB_UID = 7397
 SLURM_JOB_PARTITION = gpu
-SLURM_TASK_PID = 4328
+SLURM_TASK_PID = 4821
 SLURM_SUBMIT_DIR = /scratch/ajinkyar/Project_Ranshur_Ajinkya_Nitinkumar
 SLURM_CPUS_ON_NODE = 1
 SLURM_NTASKS = 1
-SLURM_TASK_PID = 4328
+SLURM_TASK_PID = 4821
 ==========================================
 
-     active environment : /home/ajinkyar/miniconda3
-    active env location : /home/ajinkyar/miniconda3
-            shell level : 1
+     active environment : /home/ajinkyar/miniconda3/envs/autoenc
+    active env location : /home/ajinkyar/miniconda3/envs/autoenc
+            shell level : 2
        user config file : /home/ajinkyar/.condarc
  populated config files : 
           conda version : 4.10.3
@@ -51,93 +51,104 @@ SLURM_TASK_PID = 4328
 
 Interface configured:
 Model: <class 'model.VGG16Model'>
-Trainer: <function my_descriptively_named_train_function at 0x7f91ecd800d0>
-Predictor: <function cryptic_inf_f at 0x7f91e00e7b80>
-Dataset Class: <__main__.YourCifar100Dataset object at 0x7f92b75a1ee0>
-DataLoader: <torch.utils.data.dataloader.DataLoader object at 0x7f91e0e04fd0>
+Trainer: <function my_descriptively_named_train_function at 0x7fe9cdd290d0>
+Predictor: <function cryptic_inf_f at 0x7fe9c10a6b80>
+Dataset Class: <__main__.YourCifar100Dataset object at 0x7fea98561ee0>
+DataLoader: <torch.utils.data.dataloader.DataLoader object at 0x7fe9c1dcc100>
 Batch Size: 32
 Epochs: 50
 Starting training from interface.py...
 Using device: cuda
 Starting training for 50 epochs...
-Epoch [1/50] Loss: 4.1201 Accuracy: 14.89% LR: 0.000100
-Improved accuracy: 14.89% - Saved model to ./checkpoints/final_weights.pth
-Epoch [2/50] Loss: 3.4138 Accuracy: 24.97% LR: 0.000100
-Improved accuracy: 24.97% - Saved model to ./checkpoints/final_weights.pth
-Epoch [3/50] Loss: 2.8830 Accuracy: 35.74% LR: 0.000099
-Improved accuracy: 35.74% - Saved model to ./checkpoints/final_weights.pth
-Epoch [4/50] Loss: 2.5198 Accuracy: 37.90% LR: 0.000098
-Improved accuracy: 37.90% - Saved model to ./checkpoints/final_weights.pth
-Epoch [5/50] Loss: 2.2637 Accuracy: 41.42% LR: 0.000098
-Improved accuracy: 41.42% - Saved model to ./checkpoints/final_weights.pth
-Epoch [6/50] Loss: 2.0711 Accuracy: 47.21% LR: 0.000097
-Improved accuracy: 47.21% - Saved model to ./checkpoints/final_weights.pth
-Epoch [7/50] Loss: 1.9254 Accuracy: 48.62% LR: 0.000095
-Improved accuracy: 48.62% - Saved model to ./checkpoints/final_weights.pth
-Epoch [8/50] Loss: 1.7998 Accuracy: 51.85% LR: 0.000094
-Improved accuracy: 51.85% - Saved model to ./checkpoints/final_weights.pth
-Epoch [9/50] Loss: 1.6880 Accuracy: 52.67% LR: 0.000092
-Improved accuracy: 52.67% - Saved model to ./checkpoints/final_weights.pth
-Epoch [10/50] Loss: 1.5914 Accuracy: 57.07% LR: 0.000091
-Improved accuracy: 57.07% - Saved model to ./checkpoints/final_weights.pth
-Epoch [11/50] Loss: 1.5084 Accuracy: 56.41% LR: 0.000089
-Epoch [12/50] Loss: 1.4314 Accuracy: 57.62% LR: 0.000087
-Improved accuracy: 57.62% - Saved model to ./checkpoints/final_weights.pth
-Epoch [13/50] Loss: 1.3499 Accuracy: 57.57% LR: 0.000084
-Epoch [14/50] Loss: 1.2867 Accuracy: 59.22% LR: 0.000082
-Improved accuracy: 59.22% - Saved model to ./checkpoints/final_weights.pth
-Epoch [15/50] Loss: 1.2087 Accuracy: 61.40% LR: 0.000080
-Improved accuracy: 61.40% - Saved model to ./checkpoints/final_weights.pth
-Epoch [16/50] Loss: 1.1520 Accuracy: 61.31% LR: 0.000077
-Epoch [17/50] Loss: 1.0950 Accuracy: 63.26% LR: 0.000074
-Improved accuracy: 63.26% - Saved model to ./checkpoints/final_weights.pth
-Epoch [18/50] Loss: 1.0331 Accuracy: 64.61% LR: 0.000072
-Improved accuracy: 64.61% - Saved model to ./checkpoints/final_weights.pth
-Epoch [19/50] Loss: 0.9777 Accuracy: 62.68% LR: 0.000069
-Epoch [20/50] Loss: 0.9347 Accuracy: 64.80% LR: 0.000066
-Improved accuracy: 64.80% - Saved model to ./checkpoints/final_weights.pth
-Epoch [21/50] Loss: 0.8810 Accuracy: 65.58% LR: 0.000063
-Improved accuracy: 65.58% - Saved model to ./checkpoints/final_weights.pth
-Epoch [22/50] Loss: 0.8228 Accuracy: 66.32% LR: 0.000060
-Improved accuracy: 66.32% - Saved model to ./checkpoints/final_weights.pth
-Epoch [23/50] Loss: 0.7767 Accuracy: 66.24% LR: 0.000057
-Epoch [24/50] Loss: 0.7307 Accuracy: 66.91% LR: 0.000054
-Improved accuracy: 66.91% - Saved model to ./checkpoints/final_weights.pth
-Epoch [25/50] Loss: 0.6810 Accuracy: 66.52% LR: 0.000050
-Epoch [26/50] Loss: 0.6301 Accuracy: 67.82% LR: 0.000047
-Improved accuracy: 67.82% - Saved model to ./checkpoints/final_weights.pth
-Epoch [27/50] Loss: 0.5880 Accuracy: 67.55% LR: 0.000044
-Epoch [28/50] Loss: 0.5450 Accuracy: 68.33% LR: 0.000041
-Improved accuracy: 68.33% - Saved model to ./checkpoints/final_weights.pth
-Epoch [29/50] Loss: 0.5067 Accuracy: 68.55% LR: 0.000038
-Improved accuracy: 68.55% - Saved model to ./checkpoints/final_weights.pth
-Epoch [30/50] Loss: 0.4623 Accuracy: 68.17% LR: 0.000035
-Epoch [31/50] Loss: 0.4191 Accuracy: 68.24% LR: 0.000032
-Epoch [32/50] Loss: 0.3829 Accuracy: 68.52% LR: 0.000029
-Epoch [33/50] Loss: 0.3479 Accuracy: 68.45% LR: 0.000027
-Epoch [34/50] Loss: 0.3147 Accuracy: 68.36% LR: 0.000024
-Epoch [35/50] Loss: 0.2843 Accuracy: 68.87% LR: 0.000021
-Improved accuracy: 68.87% - Saved model to ./checkpoints/final_weights.pth
-Epoch [36/50] Loss: 0.2577 Accuracy: 69.74% LR: 0.000019
-Improved accuracy: 69.74% - Saved model to ./checkpoints/final_weights.pth
-Epoch [37/50] Loss: 0.2294 Accuracy: 69.36% LR: 0.000017
-Epoch [38/50] Loss: 0.2043 Accuracy: 69.45% LR: 0.000014
-Epoch [39/50] Loss: 0.1830 Accuracy: 69.48% LR: 0.000012
-Epoch [40/50] Loss: 0.1645 Accuracy: 69.66% LR: 0.000010
-Epoch [41/50] Loss: 0.1467 Accuracy: 69.64% LR: 0.000009
-Epoch [42/50] Loss: 0.1336 Accuracy: 69.63% LR: 0.000007
-Epoch [43/50] Loss: 0.1171 Accuracy: 69.76% LR: 0.000006
-Improved accuracy: 69.76% - Saved model to ./checkpoints/final_weights.pth
-Epoch [44/50] Loss: 0.1065 Accuracy: 70.03% LR: 0.000004
-Improved accuracy: 70.03% - Saved model to ./checkpoints/final_weights.pth
-Epoch [45/50] Loss: 0.0998 Accuracy: 70.00% LR: 0.000003
-Epoch [46/50] Loss: 0.0909 Accuracy: 70.04% LR: 0.000003
-Improved accuracy: 70.04% - Saved model to ./checkpoints/final_weights.pth
-Epoch [47/50] Loss: 0.0830 Accuracy: 69.80% LR: 0.000002
-Epoch [48/50] Loss: 0.0826 Accuracy: 69.90% LR: 0.000001
-Epoch [49/50] Loss: 0.0766 Accuracy: 69.97% LR: 0.000001
-Epoch [50/50] Loss: 0.0737 Accuracy: 70.08% LR: 0.000001
-Improved accuracy: 70.08% - Saved model to ./checkpoints/final_weights.pth
+Epoch [1/50] Loss: 4.1844 Accuracy: 13.11% LR: 0.000100
+Improved accuracy: 13.11% - Saved model to ./checkpoints/final_weights.pth
+Epoch [2/50] Loss: 3.4592 Accuracy: 24.19% LR: 0.000100
+Improved accuracy: 24.19% - Saved model to ./checkpoints/final_weights.pth
+Epoch [3/50] Loss: 2.8974 Accuracy: 32.42% LR: 0.000099
+Improved accuracy: 32.42% - Saved model to ./checkpoints/final_weights.pth
+Epoch [4/50] Loss: 2.5215 Accuracy: 38.58% LR: 0.000098
+Improved accuracy: 38.58% - Saved model to ./checkpoints/final_weights.pth
+Epoch [5/50] Loss: 2.2657 Accuracy: 43.87% LR: 0.000098
+Improved accuracy: 43.87% - Saved model to ./checkpoints/final_weights.pth
+Epoch [6/50] Loss: 2.0662 Accuracy: 45.90% LR: 0.000097
+Improved accuracy: 45.90% - Saved model to ./checkpoints/final_weights.pth
+Epoch [7/50] Loss: 1.9196 Accuracy: 49.65% LR: 0.000095
+Improved accuracy: 49.65% - Saved model to ./checkpoints/final_weights.pth
+Epoch [8/50] Loss: 1.7840 Accuracy: 51.94% LR: 0.000094
+Improved accuracy: 51.94% - Saved model to ./checkpoints/final_weights.pth
+Epoch [9/50] Loss: 1.6844 Accuracy: 52.12% LR: 0.000092
+Improved accuracy: 52.12% - Saved model to ./checkpoints/final_weights.pth
+Epoch [10/50] Loss: 1.5825 Accuracy: 53.46% LR: 0.000091
+Improved accuracy: 53.46% - Saved model to ./checkpoints/final_weights.pth
+Epoch [11/50] Loss: 1.4970 Accuracy: 53.94% LR: 0.000089
+Improved accuracy: 53.94% - Saved model to ./checkpoints/final_weights.pth
+Epoch [12/50] Loss: 1.4158 Accuracy: 57.41% LR: 0.000087
+Improved accuracy: 57.41% - Saved model to ./checkpoints/final_weights.pth
+Epoch [13/50] Loss: 1.3465 Accuracy: 60.23% LR: 0.000084
+Improved accuracy: 60.23% - Saved model to ./checkpoints/final_weights.pth
+Epoch [14/50] Loss: 1.2737 Accuracy: 56.75% LR: 0.000082
+Epoch [15/50] Loss: 1.2062 Accuracy: 60.03% LR: 0.000080
+Epoch [16/50] Loss: 1.1429 Accuracy: 61.45% LR: 0.000077
+Improved accuracy: 61.45% - Saved model to ./checkpoints/final_weights.pth
+Epoch [17/50] Loss: 1.0812 Accuracy: 62.50% LR: 0.000074
+Improved accuracy: 62.50% - Saved model to ./checkpoints/final_weights.pth
+Epoch [18/50] Loss: 1.0239 Accuracy: 63.25% LR: 0.000072
+Improved accuracy: 63.25% - Saved model to ./checkpoints/final_weights.pth
+Epoch [19/50] Loss: 0.9653 Accuracy: 63.80% LR: 0.000069
+Improved accuracy: 63.80% - Saved model to ./checkpoints/final_weights.pth
+Epoch [20/50] Loss: 0.9191 Accuracy: 62.84% LR: 0.000066
+Epoch [21/50] Loss: 0.8722 Accuracy: 63.92% LR: 0.000063
+Improved accuracy: 63.92% - Saved model to ./checkpoints/final_weights.pth
+Epoch [22/50] Loss: 0.8079 Accuracy: 65.47% LR: 0.000060
+Improved accuracy: 65.47% - Saved model to ./checkpoints/final_weights.pth
+Epoch [23/50] Loss: 0.7614 Accuracy: 64.69% LR: 0.000057
+Epoch [24/50] Loss: 0.7121 Accuracy: 66.11% LR: 0.000054
+Improved accuracy: 66.11% - Saved model to ./checkpoints/final_weights.pth
+Epoch [25/50] Loss: 0.6621 Accuracy: 66.79% LR: 0.000050
+Improved accuracy: 66.79% - Saved model to ./checkpoints/final_weights.pth
+Epoch [26/50] Loss: 0.6145 Accuracy: 67.39% LR: 0.000047
+Improved accuracy: 67.39% - Saved model to ./checkpoints/final_weights.pth
+Epoch [27/50] Loss: 0.5719 Accuracy: 66.88% LR: 0.000044
+Epoch [28/50] Loss: 0.5308 Accuracy: 67.80% LR: 0.000041
+Improved accuracy: 67.80% - Saved model to ./checkpoints/final_weights.pth
+Epoch [29/50] Loss: 0.4930 Accuracy: 67.32% LR: 0.000038
+Epoch [30/50] Loss: 0.4471 Accuracy: 68.48% LR: 0.000035
+Improved accuracy: 68.48% - Saved model to ./checkpoints/final_weights.pth
+Epoch [31/50] Loss: 0.4089 Accuracy: 68.14% LR: 0.000032
+Epoch [32/50] Loss: 0.3703 Accuracy: 67.75% LR: 0.000029
+Epoch [33/50] Loss: 0.3395 Accuracy: 68.70% LR: 0.000027
+Improved accuracy: 68.70% - Saved model to ./checkpoints/final_weights.pth
+Epoch [34/50] Loss: 0.3035 Accuracy: 69.08% LR: 0.000024
+Improved accuracy: 69.08% - Saved model to ./checkpoints/final_weights.pth
+Epoch [35/50] Loss: 0.2730 Accuracy: 69.20% LR: 0.000021
+Improved accuracy: 69.20% - Saved model to ./checkpoints/final_weights.pth
+Epoch [36/50] Loss: 0.2447 Accuracy: 69.19% LR: 0.000019
+Epoch [37/50] Loss: 0.2209 Accuracy: 69.81% LR: 0.000017
+Improved accuracy: 69.81% - Saved model to ./checkpoints/final_weights.pth
+Epoch [38/50] Loss: 0.1983 Accuracy: 69.29% LR: 0.000014
+Epoch [39/50] Loss: 0.1749 Accuracy: 69.68% LR: 0.000012
+Epoch [40/50] Loss: 0.1564 Accuracy: 69.95% LR: 0.000010
+Improved accuracy: 69.95% - Saved model to ./checkpoints/final_weights.pth
+Epoch [41/50] Loss: 0.1390 Accuracy: 69.99% LR: 0.000009
+Improved accuracy: 69.99% - Saved model to ./checkpoints/final_weights.pth
+Epoch [42/50] Loss: 0.1260 Accuracy: 70.05% LR: 0.000007
+Improved accuracy: 70.05% - Saved model to ./checkpoints/final_weights.pth
+Epoch [43/50] Loss: 0.1106 Accuracy: 69.93% LR: 0.000006
+Epoch [44/50] Loss: 0.1011 Accuracy: 70.34% LR: 0.000004
+Improved accuracy: 70.34% - Saved model to ./checkpoints/final_weights.pth
+Epoch [45/50] Loss: 0.0933 Accuracy: 70.53% LR: 0.000003
+Improved accuracy: 70.53% - Saved model to ./checkpoints/final_weights.pth
+Epoch [46/50] Loss: 0.0840 Accuracy: 70.19% LR: 0.000003
+Epoch [47/50] Loss: 0.0798 Accuracy: 70.24% LR: 0.000002
+Epoch [48/50] Loss: 0.0767 Accuracy: 70.48% LR: 0.000001
+Epoch [49/50] Loss: 0.0742 Accuracy: 70.37% LR: 0.000001
+Epoch [50/50] Loss: 0.0717 Accuracy: 70.54% LR: 0.000001
+Improved accuracy: 70.54% - Saved model to ./checkpoints/final_weights.pth
 Training plot saved as training_plot.png
 Training complete!
 Running adversarial tests...
+Loading model from ./checkpoints/final_weights.pth...
+Creating test subset...
+Using 100 samples for adversarial testing
+
+Running FGSM attack...

@@ -34,11 +34,11 @@ from dataset import train_loader as the_dataloader
 from config import BATCH_SIZE as the_batch_size
 from config import NUM_EPOCHS as total_epochs
 from config import DEVICE
-
+from config import CHECKPOINT_PATH
 
 # ----- Functions -------------
 
-def ensure_results_dir(path: str = "results") -> str:
+def ensure_results_dir(path: str = "/plots/results") -> str:
     """
     Create the results directory if it doesn't exist.
     All attack plots will be saved here.
@@ -51,7 +51,7 @@ def run_fgsm_attack(model: torch.nn.Module,
                     dataloader: DataLoader,
                     device: torch.device,
                     eps: float = 0.03,
-                    results_dir: str = "results") -> tuple:
+                    results_dir: str = "/plots/results") -> tuple:
     """
     FGSM Attack:
     • eps: perturbation magnitude (larger eps = stronger noise)
@@ -111,7 +111,7 @@ def run_pgd_attack(model: torch.nn.Module,
                    eps: float = 0.03,
                    alpha: float = 0.007,
                    steps: int = 40,
-                   results_dir: str = "results") -> tuple:
+                   results_dir: str = "/plots/results") -> tuple:
     """
     PGD Attack:
     • eps: max perturbation (L∞ bound)
@@ -272,4 +272,4 @@ if __name__ == "__main__":
     
     if args.test_adversarial:
         print("Running adversarial tests...")
-        run_adversarial_tests(model_path=config.CHECKPOINT_PATH)
+        run_adversarial_tests(model_path=CHECKPOINT_PATH)
