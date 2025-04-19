@@ -3,7 +3,7 @@ import os
 import torch
 import matplotlib.pyplot as plt
 import torchattacks
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm  # For progress bars
 
 # --- Import your Model Class
@@ -63,45 +63,39 @@ def run_fgsm_attack(model: torch.nn.Module,
     # Measure clean accuracy
     correct_clean, total = 0, 0
     print("Evaluating clean accuracy...")
-    clean_pbar = tqdm(dataloader, unit="batch")
     
-    for images, labels in clean_pbar:
+    for images, labels in tqdm(dataloader, unit="batch"):
         images, labels = images.to(device), labels.to(device)
         outputs = model(images)
         _, preds = outputs.max(1)
         correct_clean += (preds == labels).sum().item()
         total += labels.size(0)
-        # Update progress bar
-        current_acc = 100 * correct_clean / total
-        clean_pbar.set_postfix({"accuracy": f"{current_acc:.2f}%"})
         
     acc_clean = correct_clean / total
+    print(f"Clean accuracy: {acc_clean*100:.2f}%")
 
     # Generate FGSM adversarial examples
     attacker = torchattacks.FGSM(model, eps=eps)
     correct_adv = 0
     
     print(f"Running FGSM attack with eps={eps}...")
-    adv_pbar = tqdm(dataloader, unit="batch")
     
-    for images, labels in adv_pbar:
+    for images, labels in tqdm(dataloader, unit="batch"):
         images, labels = images.to(device), labels.to(device)
         adv_images = attacker(images, labels)
         outputs = model(adv_images)
         _, preds = outputs.max(1)
         correct_adv += (preds == labels).sum().item()
-        # Update progress bar
-        current_acc = 100 * correct_adv / total
-        adv_pbar.set_postfix({"accuracy": f"{current_acc:.2f}%"})
         
     acc_adv = correct_adv / total
+    print(f"Adversarial accuracy: {acc_adv*100:.2f}%")
 
     # Plot and save
     plt.figure()
-    plt.bar(["Clean", f"FGSM ε={eps}"], [acc_clean, acc_adv])
-    plt.ylabel("Accuracy")
+    plt.bar(["Clean", f"FGSM ε={eps}"], [acc_clean*100, acc_adv*100])
+    plt.ylabel("Accuracy (%)")
     plt.title("Clean vs. FGSM Accuracy")
-    plt.ylim(0, 1)
+    plt.ylim(0, 100)
     plt.tight_layout()
     out_fp = os.path.join(results_dir, f"fgsm_acc_eps_{eps}.png")
     plt.savefig(out_fp)
@@ -131,45 +125,39 @@ def run_pgd_attack(model: torch.nn.Module,
     # Measure clean accuracy
     correct_clean, total = 0, 0
     print("Evaluating clean accuracy...")
-    clean_pbar = tqdm(dataloader, unit="batch")
     
-    for images, labels in clean_pbar:
+    for images, labels in tqdm(dataloader, unit="batch"):
         images, labels = images.to(device), labels.to(device)
         outputs = model(images)
         _, preds = outputs.max(1)
         correct_clean += (preds == labels).sum().item()
         total += labels.size(0)
-        # Update progress bar
-        current_acc = 100 * correct_clean / total
-        clean_pbar.set_postfix({"accuracy": f"{current_acc:.2f}%"})
         
     acc_clean = correct_clean / total
+    print(f"Clean accuracy: {acc_clean*100:.2f}%")
 
     # Generate PGD adversarial examples
     attacker = torchattacks.PGD(model, eps=eps, alpha=alpha, steps=steps)
     correct_adv = 0
     
     print(f"Running PGD attack with eps={eps}, alpha={alpha}, steps={steps}...")
-    adv_pbar = tqdm(dataloader, unit="batch")
     
-    for images, labels in adv_pbar:
+    for images, labels in tqdm(dataloader, unit="batch"):
         images, labels = images.to(device), labels.to(device)
         adv_images = attacker(images, labels)
         outputs = model(adv_images)
         _, preds = outputs.max(1)
         correct_adv += (preds == labels).sum().item()
-        # Update progress bar
-        current_acc = 100 * correct_adv / total
-        adv_pbar.set_postfix({"accuracy": f"{current_acc:.2f}%"})
         
     acc_adv = correct_adv / total
+    print(f"Adversarial accuracy: {acc_adv*100:.2f}%")
 
     # Plot and save
     plt.figure()
-    plt.bar(["Clean", f"PGD ε={eps}"], [acc_clean, acc_adv])
-    plt.ylabel("Accuracy")
+    plt.bar(["Clean", f"PGD ε={eps}"], [acc_clean*100, acc_adv*100])
+    plt.ylabel("Accuracy (%)")
     plt.title(f"Clean vs. PGD Accuracy (steps={steps})")
-    plt.ylim(0, 1)
+    plt.ylim(0, 100)
     plt.tight_layout()
     out_fp = os.path.join(results_dir, f"pgd_acc_eps_{eps}_steps_{steps}.png")
     plt.savefig(out_fp)
@@ -177,6 +165,19 @@ def run_pgd_attack(model: torch.nn.Module,
     print(f"[PGD] Plot saved: {out_fp}")
 
     return acc_clean, acc_adv
+
+
+# Fixed the dataset handling for adversarial testing
+class SimpleDataset(Dataset):
+    def __init__(self, images, labels):
+        self.images = images
+        self.labels = labels
+        
+    def __len__(self):
+        return len(self.images)
+        
+    def __getitem__(self, idx):
+        return self.images[idx], self.labels[idx]
 
 
 def run_adversarial_tests(model_path=None):
@@ -191,28 +192,36 @@ def run_adversarial_tests(model_path=None):
     model.eval()
     
     # Test subset for faster evaluation
-    test_subset = []
+    images_list = []
+    labels_list = []
     test_count = 0
     max_test_samples = 100  # Limit number of test samples for speed
     
     print("Creating test subset...")
     for images, labels in tqdm(test_loader, desc="Preparing test subset"):
-        test_subset.append((images, labels))
+        images_list.append(images)
+        labels_list.append(labels)
         test_count += images.size(0)
         if test_count >= max_test_samples:
             break
     
-    print(f"Using {test_count} samples for adversarial testing")
+    # Concatenate all batches
+    all_images = torch.cat(images_list, 0)
+    all_labels = torch.cat(labels_list, 0)
     
-    # Create a simple dataloader for the subset
-    class SimpleDataset:
-        def __init__(self, data):
-            self.data = data
-        
-        def __iter__(self):
-            return iter(self.data)
+    # Limit to max_test_samples
+    all_images = all_images[:max_test_samples]
+    all_labels = all_labels[:max_test_samples]
     
-    test_subset_loader = SimpleDataset(test_subset)
+    print(f"Using {len(all_images)} samples for adversarial testing")
+    
+    # Create proper dataloader for the subset
+    test_subset = SimpleDataset(all_images, all_labels)
+    test_subset_loader = DataLoader(
+        test_subset, 
+        batch_size=the_batch_size,
+        shuffle=False
+    )
     
     # Run attacks
     print("\nRunning FGSM attack...")

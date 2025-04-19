@@ -3,9 +3,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import config # Import configuration
+import math  # For initialization
 
 # VGG16 Architecture definition
-# Adapted from search results (e.g., DigitalOcean, Kaggle)
 class VGG16Model(nn.Module): # Rename this class as needed
     def __init__(self, num_classes=config.NUM_CLASSES):
         super(VGG16Model, self).__init__()
@@ -51,18 +51,34 @@ class VGG16Model(nn.Module): # Rename this class as needed
         self.pool5 = nn.MaxPool2d(kernel_size=2, stride=2)
 
         # Classifier
-        # The input size to the first FC layer depends on the output size after the pools
         # For 224x224 input, after 5 MaxPool layers (stride 2), the size is 224 / (2^5) = 7
         # So the flattened size is 512 * 7 * 7
         self.classifier = nn.Sequential(
             nn.Linear(512 * 7 * 7, 4096),
             nn.ReLU(True),
-            nn.Dropout(),
+            nn.Dropout(0.5),  # Explicit dropout rate
             nn.Linear(4096, 4096),
             nn.ReLU(True),
-            nn.Dropout(),
+            nn.Dropout(0.5),  # Explicit dropout rate
             nn.Linear(4096, num_classes), # Output layer for NUM_CLASSES
         )
+        
+        # Initialize weights properly
+        self._initialize_weights()
+
+    def _initialize_weights(self):
+        # Initialize convolution layers with kaiming initialization
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.constant_(m.bias, 0)
 
     def forward(self, x):
         # Block 1
@@ -93,6 +109,3 @@ class VGG16Model(nn.Module): # Rename this class as needed
         x = x.view(x.size(0), -1) # Flatten the tensor
         x = self.classifier(x)
         return x
-
-# Instantiate the model (optional here, usually done in train.py)
-# model = VGG16Model(num_classes=config.NUM_CLASSES)

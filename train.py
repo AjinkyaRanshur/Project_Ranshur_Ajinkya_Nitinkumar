@@ -52,16 +52,17 @@ def my_descriptively_named_train_function(checkpoint_path=config.CHECKPOINT_PATH
     
     # Loss function and optimizer
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(
+    
+    # Switch to Adam optimizer which often works better for deep networks
+    optimizer = optim.Adam(
         model.parameters(),
         lr=config.LEARNING_RATE,
-        momentum=config.OPTIMIZER_MOMENTUM,
         weight_decay=config.OPTIMIZER_WEIGHT_DECAY
     )
     
-    # Learning rate scheduler
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, mode='max', factor=0.1, patience=5, verbose=True
+    # Learning rate scheduler - use CosineAnnealingLR which works well with Adam
+    scheduler = optim.lr_scheduler.CosineAnnealingLR(
+        optimizer, T_max=config.NUM_EPOCHS, eta_min=1e-6
     )
     
     # Training loop
@@ -91,6 +92,10 @@ def my_descriptively_named_train_function(checkpoint_path=config.CHECKPOINT_PATH
             
             # Backward pass and optimize
             loss.backward()
+            
+            # Gradient clipping to prevent exploding gradients
+            nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+            
             optimizer.step()
             
             # Statistics
@@ -128,10 +133,11 @@ def my_descriptively_named_train_function(checkpoint_path=config.CHECKPOINT_PATH
         accuracy = 100 * correct / total
         val_accuracies.append(accuracy)
         
-        # Update learning rate based on validation accuracy
-        scheduler.step(accuracy)
+        # Update learning rate based on scheduler
+        scheduler.step()
+        current_lr = optimizer.param_groups[0]['lr']
         
-        print(f"Epoch [{epoch+1}/{config.NUM_EPOCHS}] Loss: {epoch_loss:.4f} Accuracy: {accuracy:.2f}%")
+        print(f"Epoch [{epoch+1}/{config.NUM_EPOCHS}] Loss: {epoch_loss:.4f} Accuracy: {accuracy:.2f}% LR: {current_lr:.6f}")
         
         # Save best model
         if accuracy > best_accuracy:
