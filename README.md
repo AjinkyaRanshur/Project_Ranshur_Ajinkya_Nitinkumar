@@ -139,9 +139,9 @@ sbatch run.sh
    - Each coder defines a prediction network that maps higher-level features to lower-level ones
    - During inference, representations are iteratively refined using both feedback and feedforward signals
 4. **Adversarial Testing**:
-   - FGSM attack: Single-step perturbation with epsilon=0.03
-   - PGD attack: Multi-step iterative attack with epsilon=0.03, alpha=0.007, steps=40
-   - Performance is measured with and without predictive coding
+   - FGSM attack: Applies the Fast Gradient Sign Method to generate a single‐step perturbation by adding ε times the sign of the loss gradient to each pixel, balancing attack strength and imperceptibility for images scaled to [0,1]
+   - PGD attack:  (ε = 0.03, α = 0.007, steps = 40): Runs an iterative gradient‐ascent loop where each step perturbs the input by α in the direction of the loss gradient and then projects back into the ε‐ball; using 40 steps and a small random start yields a much stronger adversary than single‐step FGSM.
+   - Performance Measurement - Classification accuracy is recorded on clean and adversarially perturbed CIFAR-100 test sets for both the baseline VGG-16 model and after applying predictive coding updates—where each layer refines its activations via top-down feedback—and prior work shows this can boost robust accuracy by roughly 65–82 % compared to the standard feedforward model
 5. **Results Visualization**: Comparative plots are generated showing the model's robustness against attacks.
 
 ## Key Papers on Predictive Coding
