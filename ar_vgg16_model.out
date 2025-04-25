@@ -1,0 +1,180 @@
+==========================================
+SLURM_CLUSTER_NAME = param-brahma
+SLURM_ARRAY_JOB_ID = 
+SLURM_ARRAY_TASK_ID = 
+SLURM_ARRAY_TASK_COUNT = 
+SLURM_ARRAY_TASK_MAX = 
+SLURM_ARRAY_TASK_MIN = 
+SLURM_JOB_ACCOUNT = leelavati
+SLURM_JOB_ID = 7980877
+SLURM_JOB_NAME = ar_vgg16_model
+SLURM_JOB_NODELIST = gpu024
+SLURM_JOB_USER = ajinkyar
+SLURM_JOB_UID = 7397
+SLURM_JOB_PARTITION = gpu
+SLURM_TASK_PID = 11168
+SLURM_SUBMIT_DIR = /scratch/ajinkyar/Project_Ranshur_Ajinkya_Nitinkumar
+SLURM_CPUS_ON_NODE = 1
+SLURM_NTASKS = 1
+SLURM_TASK_PID = 11168
+==========================================
+
+     active environment : /home/ajinkyar/miniconda3/envs/autoenc
+    active env location : /home/ajinkyar/miniconda3/envs/autoenc
+            shell level : 2
+       user config file : /home/ajinkyar/.condarc
+ populated config files : 
+          conda version : 4.10.3
+    conda-build version : 3.21.5
+         python version : 3.9.5.final.0
+       virtual packages : __cuda=12.4=0
+                          __linux=3.10.0=0
+                          __glibc=2.17=0
+                          __unix=0=0
+                          __archspec=1=x86_64
+       base environment : /home/apps/iiser/apps_intel_2020/AmberTools20/miniconda  (read only)
+      conda av data dir : /home/apps/iiser/apps_intel_2020/AmberTools20/miniconda/etc/conda
+  conda av metadata url : None
+           channel URLs : https://repo.anaconda.com/pkgs/main/linux-64
+                          https://repo.anaconda.com/pkgs/main/noarch
+                          https://repo.anaconda.com/pkgs/r/linux-64
+                          https://repo.anaconda.com/pkgs/r/noarch
+          package cache : /home/apps/iiser/apps_intel_2020/AmberTools20/miniconda/pkgs
+                          /home/ajinkyar/.conda/pkgs
+       envs directories : /home/ajinkyar/.conda/envs
+                          /home/apps/iiser/apps_intel_2020/AmberTools20/miniconda/envs
+               platform : linux-64
+             user-agent : conda/4.10.3 requests/2.25.1 CPython/3.9.5 Linux/3.10.0-957.el7.x86_64 centos/7.6.1810 glibc/2.17
+                UID:GID : 7397:7398
+             netrc file : None
+           offline mode : False
+
+Interface configured:
+Model: <class 'model.VGG16Model'>
+Trainer: <function my_descriptively_named_train_function at 0x7fe9423503a0>
+Predictor: <function cryptic_inf_f at 0x7fe935751af0>
+Dataset Class: <__main__.YourCifar100Dataset object at 0x7fea07759190>
+DataLoader: <torch.utils.data.dataloader.DataLoader object at 0x7fe9364b0a30>
+Batch Size: 32
+Epochs: 50
+Starting training from interface.py...
+Using device: cuda
+Starting training for 50 epochs...
+Epoch [1/50] Loss: 4.0738 Accuracy: 14.29% LR: 0.000100
+Improved accuracy: 14.29% - Saved model to ./checkpoints/final_weights.pth
+Epoch [2/50] Loss: 3.3543 Accuracy: 25.92% LR: 0.000100
+Improved accuracy: 25.92% - Saved model to ./checkpoints/final_weights.pth
+Epoch [3/50] Loss: 2.8373 Accuracy: 34.57% LR: 0.000099
+Improved accuracy: 34.57% - Saved model to ./checkpoints/final_weights.pth
+Epoch [4/50] Loss: 2.4920 Accuracy: 39.91% LR: 0.000098
+Improved accuracy: 39.91% - Saved model to ./checkpoints/final_weights.pth
+Epoch [5/50] Loss: 2.2298 Accuracy: 43.84% LR: 0.000098
+Improved accuracy: 43.84% - Saved model to ./checkpoints/final_weights.pth
+Epoch [6/50] Loss: 2.0527 Accuracy: 47.15% LR: 0.000097
+Improved accuracy: 47.15% - Saved model to ./checkpoints/final_weights.pth
+Epoch [7/50] Loss: 1.9041 Accuracy: 50.91% LR: 0.000095
+Improved accuracy: 50.91% - Saved model to ./checkpoints/final_weights.pth
+Epoch [8/50] Loss: 1.7821 Accuracy: 51.21% LR: 0.000094
+Improved accuracy: 51.21% - Saved model to ./checkpoints/final_weights.pth
+Epoch [9/50] Loss: 1.6703 Accuracy: 52.29% LR: 0.000092
+Improved accuracy: 52.29% - Saved model to ./checkpoints/final_weights.pth
+Epoch [10/50] Loss: 1.5769 Accuracy: 56.75% LR: 0.000091
+Improved accuracy: 56.75% - Saved model to ./checkpoints/final_weights.pth
+Epoch [11/50] Loss: 1.4947 Accuracy: 57.24% LR: 0.000089
+Improved accuracy: 57.24% - Saved model to ./checkpoints/final_weights.pth
+Epoch [12/50] Loss: 1.4204 Accuracy: 58.76% LR: 0.000087
+Improved accuracy: 58.76% - Saved model to ./checkpoints/final_weights.pth
+Epoch [13/50] Loss: 1.3493 Accuracy: 59.41% LR: 0.000084
+Improved accuracy: 59.41% - Saved model to ./checkpoints/final_weights.pth
+Epoch [14/50] Loss: 1.2806 Accuracy: 59.36% LR: 0.000082
+Epoch [15/50] Loss: 1.2175 Accuracy: 60.79% LR: 0.000080
+Improved accuracy: 60.79% - Saved model to ./checkpoints/final_weights.pth
+Epoch [16/50] Loss: 1.1651 Accuracy: 61.61% LR: 0.000077
+Improved accuracy: 61.61% - Saved model to ./checkpoints/final_weights.pth
+Epoch [17/50] Loss: 1.0922 Accuracy: 62.62% LR: 0.000074
+Improved accuracy: 62.62% - Saved model to ./checkpoints/final_weights.pth
+Epoch [18/50] Loss: 1.0361 Accuracy: 62.50% LR: 0.000072
+Epoch [19/50] Loss: 0.9778 Accuracy: 64.10% LR: 0.000069
+Improved accuracy: 64.10% - Saved model to ./checkpoints/final_weights.pth
+Epoch [20/50] Loss: 0.9309 Accuracy: 64.42% LR: 0.000066
+Improved accuracy: 64.42% - Saved model to ./checkpoints/final_weights.pth
+Epoch [21/50] Loss: 0.8768 Accuracy: 64.42% LR: 0.000063
+Epoch [22/50] Loss: 0.8291 Accuracy: 66.17% LR: 0.000060
+Improved accuracy: 66.17% - Saved model to ./checkpoints/final_weights.pth
+Epoch [23/50] Loss: 0.7798 Accuracy: 66.50% LR: 0.000057
+Improved accuracy: 66.50% - Saved model to ./checkpoints/final_weights.pth
+Epoch [24/50] Loss: 0.7344 Accuracy: 66.81% LR: 0.000054
+Improved accuracy: 66.81% - Saved model to ./checkpoints/final_weights.pth
+Epoch [25/50] Loss: 0.6807 Accuracy: 65.84% LR: 0.000050
+Epoch [26/50] Loss: 0.6355 Accuracy: 67.42% LR: 0.000047
+Improved accuracy: 67.42% - Saved model to ./checkpoints/final_weights.pth
+Epoch [27/50] Loss: 0.5929 Accuracy: 67.68% LR: 0.000044
+Improved accuracy: 67.68% - Saved model to ./checkpoints/final_weights.pth
+Epoch [28/50] Loss: 0.5546 Accuracy: 68.12% LR: 0.000041
+Improved accuracy: 68.12% - Saved model to ./checkpoints/final_weights.pth
+Epoch [29/50] Loss: 0.5137 Accuracy: 68.44% LR: 0.000038
+Improved accuracy: 68.44% - Saved model to ./checkpoints/final_weights.pth
+Epoch [30/50] Loss: 0.4705 Accuracy: 68.63% LR: 0.000035
+Improved accuracy: 68.63% - Saved model to ./checkpoints/final_weights.pth
+Epoch [31/50] Loss: 0.4306 Accuracy: 68.53% LR: 0.000032
+Epoch [32/50] Loss: 0.3934 Accuracy: 68.54% LR: 0.000029
+Epoch [33/50] Loss: 0.3577 Accuracy: 69.00% LR: 0.000027
+Improved accuracy: 69.00% - Saved model to ./checkpoints/final_weights.pth
+Epoch [34/50] Loss: 0.3269 Accuracy: 69.34% LR: 0.000024
+Improved accuracy: 69.34% - Saved model to ./checkpoints/final_weights.pth
+Epoch [35/50] Loss: 0.2942 Accuracy: 69.88% LR: 0.000021
+Improved accuracy: 69.88% - Saved model to ./checkpoints/final_weights.pth
+Epoch [36/50] Loss: 0.2659 Accuracy: 69.32% LR: 0.000019
+Epoch [37/50] Loss: 0.2373 Accuracy: 70.16% LR: 0.000017
+Improved accuracy: 70.16% - Saved model to ./checkpoints/final_weights.pth
+Epoch [38/50] Loss: 0.2106 Accuracy: 69.84% LR: 0.000014
+Epoch [39/50] Loss: 0.1876 Accuracy: 69.98% LR: 0.000012
+Epoch [40/50] Loss: 0.1720 Accuracy: 70.09% LR: 0.000010
+Epoch [41/50] Loss: 0.1533 Accuracy: 69.95% LR: 0.000009
+Epoch [42/50] Loss: 0.1391 Accuracy: 70.41% LR: 0.000007
+Improved accuracy: 70.41% - Saved model to ./checkpoints/final_weights.pth
+Epoch [43/50] Loss: 0.1235 Accuracy: 70.26% LR: 0.000006
+Epoch [44/50] Loss: 0.1122 Accuracy: 70.54% LR: 0.000004
+Improved accuracy: 70.54% - Saved model to ./checkpoints/final_weights.pth
+Epoch [45/50] Loss: 0.1027 Accuracy: 70.61% LR: 0.000003
+Improved accuracy: 70.61% - Saved model to ./checkpoints/final_weights.pth
+Epoch [46/50] Loss: 0.0953 Accuracy: 70.47% LR: 0.000003
+Epoch [47/50] Loss: 0.0892 Accuracy: 70.52% LR: 0.000002
+Epoch [48/50] Loss: 0.0860 Accuracy: 70.63% LR: 0.000001
+Improved accuracy: 70.63% - Saved model to ./checkpoints/final_weights.pth
+Epoch [49/50] Loss: 0.0820 Accuracy: 70.55% LR: 0.000001
+Epoch [50/50] Loss: 0.0786 Accuracy: 70.82% LR: 0.000001
+Improved accuracy: 70.82% - Saved model to ./checkpoints/final_weights.pth
+Training plot saved as training_plot.png
+Training complete!
+Running adversarial tests...
+Loading model from ./checkpoints/final_weights.pth...
+Creating test subset...
+Using 100 samples for adversarial testing
+
+Running attacks without predictive coding...
+
+Running FGSM attack (without PC)...
+Evaluating clean accuracy...
+Clean accuracy: 89.00%
+Running FGSM attack with eps=0.03...
+Adversarial accuracy: 8.00%
+[FGSM] Plot saved: ./plots/results/no_pc/fgsm_acc_eps_0.03.png
+
+Running PGD attack (without PC)...
+Evaluating clean accuracy...
+Clean accuracy: 89.00%
+Running PGD attack with eps=0.03, alpha=0.007, steps=40...
+Adversarial accuracy: 0.00%
+[PGD] Plot saved: ./plots/results/no_pc/pgd_acc_eps_0.03_steps_40.png
+
+Applying predictive coding to model...
+Initializing predictive coding with 5 layers on cuda...
+Added PCoder 0 for layer bn1_2
+Added PCoder 1 for layer bn2_2
+Added PCoder 2 for layer bn3_3
+Added PCoder 3 for layer bn4_3
+Added PCoder 4 for layer bn5_3
+
+Running FGSM attack (with PC)...
+Evaluating clean accuracy...
