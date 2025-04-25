@@ -95,7 +95,7 @@ In case you don't want to train the network and directly get the final_weights.p
 https://drive.google.com/drive/folders/1lLBsN56YiSeWWHkV-a-loSTZALkJDoGD?usp=sharing
 ```
 
-The reason why it is not on github is because the file size is 500 mb and git repo's cannot store files greater than 100 mb or something.
+After downloading this file add it into the checkpoints folder and the code will do the rest.The reason why it is not on github is because the file size is 500 mb and git repo's cannot store files greater than 100 mb or something.
 
 ### Training
 To train the model from scratch:
