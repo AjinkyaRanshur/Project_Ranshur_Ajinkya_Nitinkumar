@@ -58,41 +58,9 @@ data/
 ### Download Instructions
 1. Download the CIFAR-100 dataset:
 ```bash
-wget https://www.cs.toronto.edu/~kriz/cifar-100-python.tar.gz
-tar -xvzf cifar-100-python.tar.gz
-```
 
-2. Convert the dataset to the expected format:
-```python
-import pickle
-import numpy as np
-import os
-from PIL import Image
+git clone https://github.com/cyizhuo/CIFAR-100-dataset.git
 
-# Load the CIFAR-100 data
-def unpickle(file):
-    with open(file, 'rb') as fo:
-        dict = pickle.load(fo, encoding='bytes')
-    return dict
-
-# Create directories
-for split in ['train', 'test']:
-    for i in range(100):
-        os.makedirs(f"data/{split}/class_{i}", exist_ok=True)
-
-# Process training data
-train_data = unpickle('cifar-100-python/train')
-for i, (image, label) in enumerate(zip(train_data[b'data'], train_data[b'fine_labels'])):
-    img = image.reshape(3, 32, 32).transpose(1, 2, 0)
-    img = Image.fromarray(img)
-    img.save(f"data/train/class_{label}/img_{i}.png")
-
-# Process test data
-test_data = unpickle('cifar-100-python/test')
-for i, (image, label) in enumerate(zip(test_data[b'data'], test_data[b'fine_labels'])):
-    img = image.reshape(3, 32, 32).transpose(1, 2, 0)
-    img = Image.fromarray(img)
-    img.save(f"data/test/class_{label}/img_{i}.png")
 ```
 
 ## Installation Instructions
@@ -135,7 +103,7 @@ python train.py --force-retrain
 
 ### Complete Pipeline (Train + Adversarial Testing)
 ```bash
-python interface.py --train --predictive --test-adversarial
+python sample_interface.py --train --predictive --test-adversarial
 ```
 
 This command will:
