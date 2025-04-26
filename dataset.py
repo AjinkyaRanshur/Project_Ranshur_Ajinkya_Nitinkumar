@@ -25,7 +25,7 @@ data_transforms = {
 }
 
 
-github_data_path = '/scratch/ajinkyar/Project_Ranshur_Ajinkya_Nitinkumar/data'
+github_data_path = 'Project_Ranshur_Ajinkya_Nitinkumar/data'
 
 
 # Load datasets using ImageFolder
