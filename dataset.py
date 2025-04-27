@@ -25,7 +25,7 @@ data_transforms = {
 }
 
 
-github_data_path = 'Project_Ranshur_Ajinkya_Nitinkumar/data'
+github_data_path = config.DATA_DIR 
 
 
 # Load datasets using ImageFolder
